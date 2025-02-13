@@ -117,7 +117,7 @@ body {
   height: 90px;
   align-items: center;
   justify-content: center;
-  background-color: transparent;
+  background-color: red !important;
 }
 
 .nav .rightC {
@@ -126,15 +126,13 @@ body {
   background-color: transparent;
   width: 30%;
   height: 90px;
-  align-items: end;
-  justify-content: end;
   border-radius: 100px;
   background-color: transparent;
 }
 
 .rightC .button {
   display: flex;
-  position: relative;
+  position: absolute;
   width: 160px;
   height: 60px;
   background-color: #1e2330;
@@ -143,6 +141,9 @@ body {
   font-size: 17px;
   position: absolute;
   right: 18px;
+  top:0;
+  bottom:0;
+  margin: auto;
   align-items: center;
   justify-content: center;
   border-radius: 100px;
