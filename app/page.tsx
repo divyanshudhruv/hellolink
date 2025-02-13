@@ -1,4 +1,3 @@
-import Image from "next/image";
 import "./style.css";
 import Avvvatars from "avvvatars-react";
 // import { DribbbleIcon } from "@/components/ui/dribbble";
@@ -8,10 +7,6 @@ import Avvvatars from "avvvatars-react";
 import { InstagramIcon } from "@/components/ui/instagram";
 import {
   ArrowRight,
-  Github,
-  LucideGithub,
-  MailPlus,
-  ShieldCheckIcon,
 } from "lucide-react";
 
 export default function Home() {
@@ -104,7 +99,7 @@ export default function Home() {
               <div className="textBottom">
                 Join HelloLink and create your personalized link page in
                 seconds. Share all your important links with a single, sleek
-                profile. Sign up now—it's quick, easy, and free!
+                profile. Sign up now—it&apos;s quick, easy, and free!
               </div>
             </div>
           </div>
