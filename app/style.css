@@ -102,6 +102,10 @@ body {
   justify-content: center;
   text-align: center;
   height: fit-content;
+  cursor: pointer;
+}
+.linkContainer .link:hover {
+  color: #454547;
 }
 
 .nav .rightC .buttonContainer {
@@ -486,6 +490,9 @@ body {
   height: 60px;
   background-color: var(--cambridge-blue);
   border-radius: 100%;
+  align-items: center;
+  justify-content: center;
+  display: flex;
 }
 
 .header .text {
@@ -539,8 +546,37 @@ body {
   justify-content: center;
   font-size: 16px;
   color: #fff;
+  cursor: pointer;
+}
+.right .box .buttonSignIn {
+  display: flex;
+  position: absolute;
+  right: 175px;
+  max-width: 65px;
+  width: 65px;
+  height: 90px;
+  bottom: 20px;
+  border-radius: 20px;
+  max-height: 65px;
+  flex-direction: row;
+  outline: none;
+  border: 2px solid transparent;
+  background-color: var(--atomic-tangerine);
+  font-family: "Onest", sans-serif;
+  margin-top: 20px;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  color: #fff;
+  cursor: pointer;
 }
 
+.right .box .buttonSignIn:hover {
+  background-color: rgb(222, 132, 76);
+}
+.right .box .buttonSignUp:hover {
+  background-color: rgb(70, 65, 67);
+}
 .footer {
   display: flex;
   position: relative;
@@ -618,6 +654,9 @@ body {
   cursor: pointer;
 }
 
+.buttonC .button1:hover {
+  background-color: rgb(228, 129, 67);
+}
 .buttonC .button2 {
   display: flex;
   position: relative;
@@ -632,6 +671,9 @@ body {
   outline: none;
   border-radius: 100px;
   cursor: pointer;
+}
+.buttonC .button2:hover {
+  background-color: rgb(120, 158, 136);
 }
 
 .footer .right {
@@ -657,8 +699,8 @@ body {
   background-color: var(--wenge);
   flex-direction: column;
   border-radius: 100px;
-  font-family: "Onest", sans-serif;
-  font-size: 18px;
+  font-family: "Onest", monospace;
+  font-size: 17px;
   color: #fff;
   font-weight: normal;
   align-items: center;
@@ -846,12 +888,7 @@ body {
     width: 90% !important;
     left: 0;
   }
-  .signup .right .box .buttonSignUp {
-    position: absolute;
-    left: 0;
-    right: 0;
-    margin: auto;
-  }
+
   .signup {
     margin-top: 50px !important;
   }
