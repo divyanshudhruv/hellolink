@@ -1,36 +1,73 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🔗 HelloLink
 
-## Getting Started
+HelloLink is a **simple** and **sleek** platform that allows users to create a **single**, **powerful** link to organize and share everything they love in **one** **place**. 🌐
 
-First, run the development server:
+<br>
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+![GitHub stars](https://img.shields.io/github/stars/divyanshudhruv/hellolink?style=for-the-badge)
+![GitHub last commit](https://img.shields.io/github/last-commit/divyanshudhruv/hellolink.svg?style=for-the-badge)
+![GitHub issues](https://img.shields.io/github/issues/divyanshudhruv/hellolink.svg?style=for-the-badge)
+![GitHub contributors](https://img.shields.io/github/contributors/divyanshudhruv/hellolink.svg?style=for-the-badge)
+![Top language](https://img.shields.io/github/languages/top/divyanshudhruv/hellolink.svg?style=for-the-badge)
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+<br>
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+> [!IMPORTANT]\
+> If you find **HelloLink** helpful and want to support the **project**, please give it a **star** on GitHub! Your star helps the development.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+<br>
 
-## Learn More
+> [!NOTE]\
+> **HelloLink** is fully functional, though there may be a few **minor** **bugs** or **issues**.
 
-To learn more about Next.js, take a look at the following resources:
+<br>
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## ✨ Features
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- 🎨 **`Customizable Profiles`**: Users can create a short, shareable link in the format `hellolink/username`.
+- 📱 **`Adaptive Layout`**: A clean and responsive design that looks great on all devices.
+- ⚡ **`Instant Actions`**: Users can add quick-access actions for WhatsApp, email, and DMs.
+- 📝 **`Easy Sign-Up`**: Create an account in seconds and start sharing your personalized link page.
+- 💻 **`Open Source Contribution`**: Contribute to HelloLink via GitHub.
 
-## Deploy on Vercel
+## 🎯 Usage
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- **`🔑 Sign Up`:**
+  - Enter a username and password to create an account.
+  - Generate your personalized HelloLink page.
+- **`🛠 Navigation:`**
+  - **🏠 Home**: Explore the platform.
+  - **✏️ Create**: Start setting up your profile.
+  - **📊 Dashboard**: Manage your links and settings.
+  - **🤝 Contribute**: Open-source collaboration on GitHub.
+- **`📌 Footer:`**
+  - **© 2025 HelloLink**. All rights reserved.
+  - **🐞 Developer Credits**: `Made with bugs by @divyanshudhruv`
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 🤝 Contributing
+
+Contributions are welcome! To contribute:
+
+1. **Fork** the `repository`.
+2. **Create** a new branch (`feature-branch`).
+3. **Commit** your changes.
+4. **Push** to the branch and submit a `pull request`.
+
+## ⚙️ Tech Stacks
+
+- **`✋ Frontend`**: React, Next.js, Tailwind CSS, ShadcnUI
+- **`🤚 Backend`**: Node.js, Supabase
+- **`🤖 AI model`**: none
+- **`⚖️ Management Library`**: Zustand
+- **`💻 Languages`**: TypeScript, Jupyter Notebook, ViteJS
+- **`🏪 Database`**: Supabase, LocalStorage
+- **`🏗️ Deployment`**: Vercel, Gh-Pages
+
+## 🪪 License
+
+This **project** is licensed under the **`MIT License`**.
+
+## 🔐 Security
+
+> [!NOTE]
+> If you notice any security issues, API leaks, or anything that seems off regarding the security of this project, please open a **`PULL REQUEST`** and reference the security issue.
