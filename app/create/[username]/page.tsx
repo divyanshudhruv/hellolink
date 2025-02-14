@@ -16,97 +16,64 @@ import Avvvatars from "avvvatars-react";
 import { supabase } from "@/config/supabase";
 
 export default function CreateProfile() {
-  const [booleanAuth, setBooleanAuth] = useState(false);
   const { username } = useParams<{ username: string }>();
-  const [finalUserID, setFinalUserID] = useState("");
-  const [finalFetchedUserID, setFinalFetchedUserID] = useState("");
-  const [nameFinal, setNameFinal] = useState("");
-  const [bioFinal, setBioFinal] = useState("");
+  const [isAuthorized, setIsAuthorized] = useState(false);
+  const [userData, setUserData] = useState({
+    id: "",
+    uid: "",
+    name: "",
+    bio: "",
+  });
+  const [links, setLinks] = useState([{ id: 0, name: "", url: "" }]);
+  const [idCounter, setIdCounter] = useState(1);
+
   useEffect(() => {
-    async function fetchUserIds() {
-      const userId = await getUserId();
-      const userUid = await getUserUid(username);
-      setFinalUserID(userId || "");
-      setFinalFetchedUserID(userUid || "");
+    async function fetchUserData() {
+      const userId = await getCurrentUserId();
+      const userDetails = await getUserDetails(username);
 
-      setNameFinal((await getUserName(username)) || "");
-      setBioFinal((await getUserBio(username)) || "");
+      setUserData({
+        id: userId || "",
+        uid: userDetails?.uid || "",
+        name: userDetails?.name || "",
+        bio: userDetails?.bio || "",
+      });
 
-      if (userUid === userId) {
-        console.log("User ID and UID are the same.");
-        setBooleanAuth(true);
+      if (userDetails?.uid === userId) {
+        setIsAuthorized(true);
       }
     }
-    fetchUserIds();
+    fetchUserData();
   }, [username]);
 
-  const getUserName = async (username: string) => {
-    const { data, error } = await supabase
-      .from("users")
-      .select("name")
-      .eq("id", username)
-      .single();
-
-    if (error) {
-      console.error("Error fetching name:", error);
-      return null;
-    }
-    return data?.name; // Correctly return the name
-  };
-
-  const getUserBio = async (username: string) => {
-    const { data, error } = await supabase
-      .from("users")
-      .select("bio")
-      .eq("id", username)
-      .single();
-
-    if (error) {
-      console.error("Error fetching name:", error);
-      return null;
-    }
-    return data?.bio; // Correctly return the name
-  };
-
-  const getUserUid = async (username: string) => {
-    const { data, error } = await supabase
-      .from("users")
-      .select("uid")
-      .eq("id", username)
-      .single();
-
-    if (error) {
-      console.error("Error fetching UID:", error);
-      return null;
-    }
-
-    const idFinal = data?.uid;
-    return idFinal;
-  };
-
-  const getUserId = async () => {
+  async function getCurrentUserId() {
     const {
       data: { session },
       error,
     } = await supabase.auth.getSession();
+    if (error) console.error("Error fetching session:", error);
+    return session?.user?.id || null;
+  }
+
+  interface UserDetails {
+    uid: string;
+    name: string;
+    bio: string;
+  }
+
+  async function getUserDetails(username: string): Promise<UserDetails | null> {
+    const { data, error } = await supabase
+      .from("users")
+      .select("uid, name, bio")
+      .eq("id", username)
+      .single();
 
     if (error) {
-      console.error("Error fetching session:", error);
+      console.error("Error fetching user details:", error);
       return null;
     }
-
-    if (session?.user) {
-      return session.user.id;
-    } else {
-      console.log("No active session found.");
-      return null;
-    }
-  };
-
-  const [links, setLinks] = useState<
-    { id: number; name: string; url: string }[]
-  >([{ id: 0, name: "", url: "" }]);
-  const [idCounter, setIdCounter] = useState(1);
+    return data;
+  }
 
   const addLink = () => {
     setLinks([...links, { id: idCounter, name: "", url: "" }]);
@@ -114,106 +81,86 @@ export default function CreateProfile() {
   };
 
   const updateLink = (id: number, name: string, url: string) => {
-    setLinks((prevLinks) =>
-      prevLinks.map((link) => (link.id === id ? { ...link, name, url } : link))
+    setLinks(
+      links.map((link) => (link.id === id ? { ...link, name, url } : link))
     );
   };
 
   const removeLink = (id: number) => {
-    setLinks((prevLinks) => prevLinks.filter((link) => link.id !== id));
+    setLinks(links.filter((link) => link.id !== id));
   };
 
-  const saveLinksToSupabase = async (userId: string) => {
-    const dataToSave = links.reduce<Record<string, { url: string }>>(
-      (acc, { name, url }) => {
-        if (name.trim() !== "" && url.trim() !== "") {
-          acc[name] = { url };
-        }
-        return acc;
-      },
-      {} as Record<string, { url: string }>
-    );
+  const saveLinksToSupabase = async () => {
+    if (!userData.uid) return;
+
+    const formattedLinks = links.reduce((acc, { name, url }) => {
+      if (name.trim() && url.trim()) acc[name] = { url };
+      return acc;
+    }, {} as Record<string, { url: string }>);
 
     const { error } = await supabase
       .from("users")
-      .update({ links: dataToSave })
-      .eq("uid", userId);
+      .update({ links: formattedLinks })
+      .eq("uid", userData.uid);
 
-    if (error) {
-      console.error("Error saving links to Supabase:", error);
-    } else {
-      console.log("Links saved successfully in Supabase:", dataToSave);
-    }
+    if (error) console.error("Error saving links:", error);
+    else console.log("Links saved successfully:", formattedLinks);
   };
 
-  if (booleanAuth) {
-    return (
-      <>
-        <div className="home">
-          <div className="nav">
-            <div className="textBig">hellolink</div>
+  if (!isAuthorized) return <>Loading... (authorization unsuccessful)</>;
+
+  return (
+    <div className="home">
+      <div className="nav">
+        <div className="textBig">hellolink</div>
+      </div>
+      <div className="main">
+        <div className="top">
+          <div className="pfp"></div>
+          <div className="name">{userData.name}</div>
+          <div className="bio">
+            {userData.bio || "Write a short bio about yourself."}
           </div>
-          <div className="main">
-            <div className="top">
-              <div className="pfp"></div>
-              <div className="name">{nameFinal}</div>
-              <div className="bio">
-                {bioFinal || "Write a short bio about yourself."}
+          <div className="socials">
+            {[Github, Dribbble, Linkedin, CodepenIcon].map((Icon, idx) => (
+              <div key={idx} className="item">
+                <Icon />
               </div>
-              <div className="socials">
-                <div className="item">
-                  <Github />
-                </div>
-                <div className="item">
-                  <Dribbble />
-                </div>
-                <div className="item">
-                  <Linkedin />
-                </div>
-                <div className="item">
-                  <CodepenIcon />
-                </div>
-              </div>
+            ))}
+          </div>
+        </div>
+        <div className="bottom">
+          <div className="textTop">Featured Links</div>
+          <div className="linkC">
+            <div
+              className="linkContainer"
+              style={{
+                width: "100%",
+                gap: "20px",
+                display: "flex",
+                flexDirection: "column",
+              }}
+            >
+              {links.map((link) => (
+                <DynamicLink
+                  key={link.id}
+                  link={link}
+                  updateLink={updateLink}
+                  removeLink={removeLink}
+                />
+              ))}
             </div>
-            <div className="bottom">
-              <div className="textTop">Featured Links</div>
-              <div className="linkC">
-                <div
-                  className="linkContainer"
-                  style={{
-                    width: "100%",
-                    gap: "20px",
-                    display: "flex",
-                    flexDirection: "column",
-                  }}
-                >
-                  {links.map((link) => (
-                    <DynamicLink
-                      key={link.id}
-                      link={link}
-                      updateLink={updateLink}
-                      removeLink={removeLink}
-                    />
-                  ))}
-                </div>
-                <div className="addLink" id="add" onClick={addLink}>
-                  <Plus size={45} />
-                </div>
-                <div
-                  className="saveLink"
-                  onClick={() => saveLinksToSupabase(finalFetchedUserID)}
-                >
-                  <Save size={26} /> Save Links
-                </div>
-              </div>
+            <div className="addLink" onClick={addLink}>
+              <Plus size={45} />
+            </div>
+            <div className="saveLink" onClick={saveLinksToSupabase}>
+              <Save size={26} /> Save Links
             </div>
           </div>
         </div>
-      </>
-    );
-  } else {
-    return <>Loading... (authorization unsuccessful)</>;
-  }
+      </div>
+    </div>
+  );
 }
 
 function DynamicLink({
