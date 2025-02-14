@@ -14,7 +14,7 @@ import {
 } from "lucide-react";
 import Avvvatars from "avvvatars-react";
 import { supabase } from "@/config/supabase";
-
+//
 export default function CreateProfile() {
   const { username } = useParams<{ username: string }>();
   const [isAuthorized, setIsAuthorized] = useState(false);
@@ -172,7 +172,7 @@ function DynamicLink({
   updateLink: (id: number, name: string, url: string) => void;
   removeLink: (id: number) => void;
 }) {
-  const logoRef = useRef<NodeJS.Timeout | null>(null);
+  const logoRef = useRef<number | null>(null);
   const [logoValue, setLogoValue] = useState(link.name || "410dev");
 
   const handleUrlChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -180,15 +180,13 @@ function DynamicLink({
     updateLink(link.id, link.name, newUrl);
 
     if (logoRef.current) clearTimeout(logoRef.current);
-    logoRef.current = setTimeout(() => {
-      setLogoValue(newUrl);
-    }, 500);
+    logoRef.current = window.setTimeout(() => setLogoValue(newUrl), 500);
   };
 
   return (
     <div className="link">
       <div className="logo">
-        <Avvvatars value={logoValue || "410dev"} style="shape" size={55} />
+        <Avvvatars value={logoValue} style="shape" size={55} />
       </div>
       <div className="input">
         <input
@@ -197,7 +195,7 @@ function DynamicLink({
           value={link.name}
           onChange={(e) => updateLink(link.id, e.target.value, link.url)}
         />
-        <div className="seperator"></div>
+        <div className="separator"></div>
         <input
           type="text"
           placeholder="Link"
