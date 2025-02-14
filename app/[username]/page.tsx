@@ -15,8 +15,60 @@ import {
 } from "lucide-react";
 import Avvvatars from "avvvatars-react";
 import { supabase } from "@/config/supabase";
+import { User } from "@supabase/supabase-js";
 
 export default function ShowProfile() {
+  const [userSession, setUserSession] = useState<User | null>(null);
+  const [socials, setSocials] = useState({
+    github: "",
+    dribbble: "",
+    linkedin: "",
+    codepen: "",
+  });
+
+  useEffect(() => {
+    const fetchUserAndSocials = async () => {
+      // Step 1: Get user session
+      const { data: sessionData, error: sessionError } =
+        await supabase.auth.getSession();
+      if (sessionError) {
+        console.error("Error fetching session:", sessionError);
+        return;
+      }
+
+      const user = sessionData?.session?.user;
+      if (!user) {
+        console.error("User session not found.");
+        return;
+      }
+
+      setUserSession(user); // Store user session
+
+      // Step 2: Fetch social links from database
+      const { data: socialsData, error: socialsError } = await supabase
+        .from("users")
+        .select("socials")
+        .eq("uid", user.id)
+        .single();
+
+      if (socialsError) {
+        console.error("Error fetching socials:", socialsError);
+        return;
+      }
+
+      if (socialsData?.socials) {
+        setSocials({
+          github: socialsData.socials.github || "",
+          dribbble: socialsData.socials.dribbble || "",
+          linkedin: socialsData.socials.linkedin || "",
+          codepen: socialsData.socials.codepen || "",
+        });
+      }
+    };
+
+    fetchUserAndSocials();
+  }, []);
+
   const { username } = useParams() as unknown as { username: string };
 
   const [isAuthorized, setIsAuthorized] = useState(false);
@@ -142,11 +194,30 @@ export default function ShowProfile() {
               {userData.bio || "Write a short bio about yourself."}
             </div>
             <div className="socials">
-              {[Github, Dribbble, Linkedin, CodepenIcon].map((Icon, idx) => (
-                <div key={idx} className="item">
-                  <Icon />
-                </div>
-              ))}
+              <div
+                className="item"
+                onClick={() => window.open(socials.github, "_blank")}
+              >
+                <Github />
+              </div>
+              <div
+                className="item"
+                onClick={() => window.open(socials.dribbble, "_blank")}
+              >
+                <Dribbble />
+              </div>
+              <div
+                className="item"
+                onClick={() => window.open(socials.linkedin, "_blank")}
+              >
+                <Linkedin />
+              </div>
+              <div
+                className="item"
+                onClick={() => window.open(socials.codepen, "_blank")}
+              >
+                <CodepenIcon />
+              </div>
             </div>
           </div>
           <div className="bottom">

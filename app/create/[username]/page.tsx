@@ -36,10 +36,14 @@ import { Toaster } from "sonner";
 import { toast } from "sonner";
 
 export default function CreateProfile() {
-  const [github, setGithub] = useState("");
-  const [dribbble, setDribbble] = useState("");
-  const [linkedin, setLinkedin] = useState("");
-  const [codepen, setCodepen] = useState("");
+  const [githubFinal, setGithubFinal] = useState("");
+  const [dribbbleFinal, setDribbbleFinal] = useState("");
+  const [linkedinFinal, setLinkedinFinal] = useState("");
+  const [codepenFinal, setCodepenFinal] = useState("");
+  const [github, setGithub] = useState(githubFinal || "");
+  const [dribbble, setDribbble] = useState(dribbbleFinal || "");
+  const [linkedin, setLinkedin] = useState(linkedinFinal || "");
+  const [codepen, setCodepen] = useState(codepenFinal || "");
 
   const { username } = useParams();
   const [isAuthorized, setIsAuthorized] = useState(false);
@@ -190,12 +194,66 @@ export default function CreateProfile() {
     else {
       // console.log("Bio saved successfully:", bio);
       toast("Bio saved successfully", {
-        description: `url: hellolink/${userData.name}`,
+        description: `Database updated for ${userData.name}`,
         action: {
           label: "Okay",
           onClick: () => console.log("Undo"),
         },
       });
+    }
+  }
+
+  async function saveSocials() {
+    if (!userData?.uid) {
+      console.error("User UID not found.");
+      return;
+    }
+
+    let socialsJSON = {
+      github: github,
+      dribbble: dribbble,
+      linkedin: linkedin,
+      codepen: codepen,
+    };
+
+    const { error } = await supabase
+      .from("users")
+      .update({ socials: socialsJSON }) // ✅ Now saving as JSON, not a string
+      .eq("uid", userData.uid); // ✅ Ensure correct user is updated
+
+    if (error) {
+      console.error("Error saving socials:", error);
+    } else {
+      toast("Social links saved successfully", {
+        description: `Database updated for ${userData.name}`,
+        action: {
+          label: "Okay",
+          onClick: () => console.log("Undo"),
+        },
+      });
+    }
+  }
+
+  async function fetchSocials() {
+    if (!userData?.uid) {
+      console.error("User UID not found.");
+      return;
+    }
+
+    const { data, error } = await supabase
+      .from("users")
+      .select("socials")
+      .eq("uid", userData.uid)
+      .single();
+
+    if (error) {
+      console.error("Error fetching socials:", error);
+    } else if (data?.socials) {
+      // Extract values and set them to state variables
+      setGithubFinal(data.socials.github || "");
+      setDribbbleFinal(data.socials.dribbble || "");
+      setLinkedinFinal(data.socials.linkedin || "");
+      setCodepenFinal(data.socials.codepen || "");
     }
   }
 
@@ -223,6 +281,8 @@ export default function CreateProfile() {
     }
   }
 
+  fetchSocials();
+  // ✅ Dependency added to re-run when userData.uid changes
   return (
     <>
       {" "}
@@ -310,54 +370,61 @@ export default function CreateProfile() {
                     <div className="min-w-full min-h-fit">
                       <Label>Github</Label>
                       <Input
-                        placeholder="url"
+                        placeholder="Enter GitHub URL"
                         id="github"
-                        onChange={(e) => setGithub(e.target.value)}
-                      ></Input>
+                        value={github}
+                        onChange={(e) => setGithub(e.target.value)} // ✅ No cursor reset
+                      />
                       <div
                         style={{
                           display: "flex",
                           height: "10px",
                           width: "100%",
                         }}
-                      ></div>{" "}
+                      />
+
                       <Label>Dribbble</Label>
                       <Input
-                        placeholder="url"
+                        placeholder="Enter Dribbble URL"
                         id="dribbble"
+                        value={dribbble}
                         onChange={(e) => setDribbble(e.target.value)}
-                      ></Input>
+                      />
                       <div
                         style={{
                           display: "flex",
                           height: "10px",
                           width: "100%",
                         }}
-                      ></div>{" "}
-                      <Label>Linkedin</Label>
+                      />
+
+                      <Label>LinkedIn</Label>
                       <Input
-                        placeholder="url"
+                        placeholder="Enter LinkedIn URL"
                         id="linkedin"
+                        value={linkedin}
                         onChange={(e) => setLinkedin(e.target.value)}
-                      ></Input>
+                      />
                       <div
                         style={{
                           display: "flex",
                           height: "10px",
                           width: "100%",
                         }}
-                      ></div>{" "}
-                      <Label>Codepen</Label>
+                      />
+
+                      <Label>CodePen</Label>
                       <Input
-                        placeholder="url"
+                        placeholder="Enter CodePen URL"
                         id="codepen"
+                        value={codepen}
                         onChange={(e) => setCodepen(e.target.value)}
-                      ></Input>
+                      />
                     </div>
                   </div>
                   <DialogFooter>
                     <DialogTrigger asChild>
-                      <Button onClick={saveBio}>Save changes</Button>
+                      <Button onClick={saveSocials}>Save changes</Button>
                     </DialogTrigger>
                   </DialogFooter>
                 </DialogContent>
@@ -380,39 +447,62 @@ export default function CreateProfile() {
                   <div className="grid gap-4 py-4">
                     <div className="min-w-full min-h-fit">
                       <Label>Github</Label>
-                      <Input placeholder="url"></Input>
+                      <Input
+                        placeholder="Enter GitHub URL"
+                        id="github"
+                        value={github}
+                        onChange={(e) => setGithub(e.target.value)} // ✅ No cursor reset
+                      />
                       <div
                         style={{
                           display: "flex",
                           height: "10px",
                           width: "100%",
                         }}
-                      ></div>{" "}
+                      />
+
                       <Label>Dribbble</Label>
-                      <Input placeholder="url"></Input>
+                      <Input
+                        placeholder="Enter Dribbble URL"
+                        id="dribbble"
+                        value={dribbble}
+                        onChange={(e) => setDribbble(e.target.value)}
+                      />
                       <div
                         style={{
                           display: "flex",
                           height: "10px",
                           width: "100%",
                         }}
-                      ></div>{" "}
-                      <Label>Linkedin</Label>
-                      <Input placeholder="url"></Input>
+                      />
+
+                      <Label>LinkedIn</Label>
+                      <Input
+                        placeholder="Enter LinkedIn URL"
+                        id="linkedin"
+                        value={linkedin}
+                        onChange={(e) => setLinkedin(e.target.value)}
+                      />
                       <div
                         style={{
                           display: "flex",
                           height: "10px",
                           width: "100%",
                         }}
-                      ></div>{" "}
-                      <Label>Codepen</Label>
-                      <Input placeholder="url"></Input>
+                      />
+
+                      <Label>CodePen</Label>
+                      <Input
+                        placeholder="Enter CodePen URL"
+                        id="codepen"
+                        value={codepen}
+                        onChange={(e) => setCodepen(e.target.value)}
+                      />
                     </div>
                   </div>
                   <DialogFooter>
                     <DialogTrigger asChild>
-                      <Button onClick={saveBio}>Save changes</Button>
+                      <Button onClick={saveSocials}>Save changes</Button>
                     </DialogTrigger>
                   </DialogFooter>
                 </DialogContent>
@@ -435,39 +525,62 @@ export default function CreateProfile() {
                   <div className="grid gap-4 py-4">
                     <div className="min-w-full min-h-fit">
                       <Label>Github</Label>
-                      <Input placeholder="url"></Input>
+                      <Input
+                        placeholder="Enter GitHub URL"
+                        id="github"
+                        value={github}
+                        onChange={(e) => setGithub(e.target.value)} // ✅ No cursor reset
+                      />
                       <div
                         style={{
                           display: "flex",
                           height: "10px",
                           width: "100%",
                         }}
-                      ></div>{" "}
+                      />
+
                       <Label>Dribbble</Label>
-                      <Input placeholder="url"></Input>
+                      <Input
+                        placeholder="Enter Dribbble URL"
+                        id="dribbble"
+                        value={dribbble}
+                        onChange={(e) => setDribbble(e.target.value)}
+                      />
                       <div
                         style={{
                           display: "flex",
                           height: "10px",
                           width: "100%",
                         }}
-                      ></div>{" "}
-                      <Label>Linkedin</Label>
-                      <Input placeholder="url"></Input>
+                      />
+
+                      <Label>LinkedIn</Label>
+                      <Input
+                        placeholder="Enter LinkedIn URL"
+                        id="linkedin"
+                        value={linkedin}
+                        onChange={(e) => setLinkedin(e.target.value)}
+                      />
                       <div
                         style={{
                           display: "flex",
                           height: "10px",
                           width: "100%",
                         }}
-                      ></div>{" "}
-                      <Label>Codepen</Label>
-                      <Input placeholder="url"></Input>
+                      />
+
+                      <Label>CodePen</Label>
+                      <Input
+                        placeholder="Enter CodePen URL"
+                        id="codepen"
+                        value={codepen}
+                        onChange={(e) => setCodepen(e.target.value)}
+                      />
                     </div>
                   </div>
                   <DialogFooter>
                     <DialogTrigger asChild>
-                      <Button onClick={saveBio}>Save changes</Button>
+                      <Button onClick={saveSocials}>Save changes</Button>
                     </DialogTrigger>
                   </DialogFooter>
                 </DialogContent>
@@ -490,39 +603,62 @@ export default function CreateProfile() {
                   <div className="grid gap-4 py-4">
                     <div className="min-w-full min-h-fit">
                       <Label>Github</Label>
-                      <Input placeholder="url"></Input>
+                      <Input
+                        placeholder="Enter GitHub URL"
+                        id="github"
+                        value={github}
+                        onChange={(e) => setGithub(e.target.value)} // ✅ No cursor reset
+                      />
                       <div
                         style={{
                           display: "flex",
                           height: "10px",
                           width: "100%",
                         }}
-                      ></div>{" "}
+                      />
+
                       <Label>Dribbble</Label>
-                      <Input placeholder="url"></Input>
+                      <Input
+                        placeholder="Enter Dribbble URL"
+                        id="dribbble"
+                        value={dribbble}
+                        onChange={(e) => setDribbble(e.target.value)}
+                      />
                       <div
                         style={{
                           display: "flex",
                           height: "10px",
                           width: "100%",
                         }}
-                      ></div>{" "}
-                      <Label>Linkedin</Label>
-                      <Input placeholder="url"></Input>
+                      />
+
+                      <Label>LinkedIn</Label>
+                      <Input
+                        placeholder="Enter LinkedIn URL"
+                        id="linkedin"
+                        value={linkedin}
+                        onChange={(e) => setLinkedin(e.target.value)}
+                      />
                       <div
                         style={{
                           display: "flex",
                           height: "10px",
                           width: "100%",
                         }}
-                      ></div>{" "}
-                      <Label>Codepen</Label>
-                      <Input placeholder="url"></Input>
+                      />
+
+                      <Label>CodePen</Label>
+                      <Input
+                        placeholder="Enter CodePen URL"
+                        id="codepen"
+                        value={codepen}
+                        onChange={(e) => setCodepen(e.target.value)}
+                      />
                     </div>
                   </div>
                   <DialogFooter>
                     <DialogTrigger asChild>
-                      <Button onClick={saveBio}>Save changes</Button>
+                      <Button onClick={saveSocials}>Save changes</Button>
                     </DialogTrigger>
                   </DialogFooter>
                 </DialogContent>
