@@ -3,6 +3,7 @@
 import { useParams } from "next/navigation";
 import { useState, useRef, useEffect } from "react";
 import "./show.css";
+import "./../../styles/errorPage.css";
 import {
   ArrowRight,
   CodepenIcon,
@@ -167,7 +168,29 @@ export default function ShowProfile() {
     setIdCounter(savedLinks.length + 1);
   }
 
-  if (!isAuthorized) return <>Loading... (authorization unsuccessful)</>;
+  function UserNotFound() {
+    useEffect(() => {
+      const timer = setTimeout(() => {
+        setShowNotFound(true);
+      }, 3000);
+      return () => clearTimeout(timer);
+    }, []);
+
+    const [showNotFound, setShowNotFound] = useState(false);
+
+    return showNotFound ? <>USER NOT FOUND ;-;</> : null;
+  }
+
+  if (!isAuthorized)
+    return (
+      <>
+        <div className="error">
+          Loading(checking auth)...
+          <br />
+          <UserNotFound />
+        </div>
+      </>
+    );
 
   return (
     <>

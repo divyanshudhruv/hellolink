@@ -3,6 +3,7 @@
 import { useParams } from "next/navigation";
 import { useState, useRef, useEffect } from "react";
 import "./create.css";
+import "./../../../styles/errorPage.css";
 import {
   Codepen,
   CodepenIcon,
@@ -182,7 +183,30 @@ export default function CreateProfile() {
     setLinks((prev) => prev.filter((link) => link.id !== id));
   };
 
-  if (!isAuthorized) return <>Loading... (authorization unsuccessful)</>;
+  function UserNotFound() {
+    useEffect(() => {
+      const timer = setTimeout(() => {
+        setShowNotFound(true);
+      }, 3000);
+      return () => clearTimeout(timer);
+    }, []);
+
+    const [showNotFound, setShowNotFound] = useState(false);
+
+    return showNotFound ? <>USER NOT FOUND ;-;</> : null;
+  }
+
+  if (!isAuthorized)
+    return (
+      <>
+        <div className="error">
+          Loading(checking auth)...
+          <br />
+          
+          <UserNotFound />
+        </div>
+      </>
+    );
 
   async function saveBio() {
     if (!userData.uid) return;

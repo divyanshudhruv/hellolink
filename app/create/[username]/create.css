@@ -147,6 +147,7 @@ body {
   justify-content: start;
   flex-direction: column;
   animation: topUp 0.3s linear;
+  animation: linkUp 0.4s linear;
 }
 
 @keyframes topUp {
@@ -312,17 +313,16 @@ body {
   justify-content: start;
   flex-direction: row;
   padding-left: 15px;
-  animation: linkUp 0.3s linear;
+  animation: linkUp 0.4s linear;
 }
 
 .linkC .link:hover {
   box-shadow: 0px 5px 0px 0.1px rgba(30, 35, 48, 0.9);
-
 }
 
 @keyframes linkUp {
   0% {
-    transform: translateY(6px);
+    transform: translateY(7px);
     opacity: 0;
   }
   30% {
@@ -511,7 +511,7 @@ body {
   }
 
   .nav .button {
-   scale: 0.7;
-   right: 33px  !important;
+    scale: 0.7;
+    right: 33px !important;
   }
 }

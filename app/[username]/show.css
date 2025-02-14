@@ -121,7 +121,7 @@ body {
   align-items: center;
   justify-content: start;
   flex-direction: column;
-  animation: linkUp 0.3s linear;
+  animation: linkUp 0.4s linear;
 }
 .main .pfp {
   display: flex;
@@ -184,12 +184,19 @@ body {
   position: relative;
   width: 40px;
   height: 40px;
-  background-color: #ececec;
+  background-color: transparent;
   align-items: center;
   justify-content: center;
   border-radius: 15px;
   color: #1e2330 !important;
   cursor: pointer;
+}
+
+.socials .item:nth-child(2) {
+  background-color: #ececec;
+}
+.socials .item:nth-child(3) {
+  background-color: #ececec;
 }
 
 .socials .item:hover {
@@ -254,12 +261,14 @@ body {
   justify-content: start;
   flex-direction: row;
   padding-left: 10px;
-  animation: linkUp 0.3s linear;
+  animation: linkUp 0.4s linear;
 }
-
+.linkC .link:hover {
+  box-shadow: 0px 3px 0px 0.1px rgba(30, 35, 48, 0.9);
+}
 @keyframes linkUp {
   0% {
-    transform: translateY(3px);
+    transform: translateY(7px);
     opacity: 0;
   }
   20% {
