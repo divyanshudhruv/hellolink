@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-
 export async function generateMetadata({
   params,
 }: {
@@ -16,6 +15,7 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en">
+        
       <body>{children}</body>
     </html>
   );
