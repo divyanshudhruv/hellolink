@@ -1,101 +1,412 @@
-import Image from "next/image";
+"use client";
+import "./style.css";
+import Avvvatars from "avvvatars-react";
+import { supabase } from "@/config/supabase";
+import { InstagramIcon } from "@/components/ui/instagram";
+import { ArrowRight, LogIn } from "lucide-react";
+import { useState, useEffect } from "react";
+import { Toaster } from "sonner";
+import { toast } from "sonner";
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
+  async function signUpNewUser() {
+    if (!username || !password) {
+      alert("Username and password are required!");
+      return;
+    }
+
+    const usernameFinal = `${username}@nexoq.me`;
+    setLoading(true);
+
+    const { data, error } = await supabase.auth.signUp({
+      email: usernameFinal,
+      password: password,
+      options: {
+        data: {
+          display_name: username,
+        },
+      },
+    });
+
+    if (error) {
+      console.error("Signup error:", error.message);
+    } else {
+      const user = data.user;
+      if (user) {
+        const { error: insertError } = await supabase.from("users").insert([
+          {
+            uid: user.id, // Supabase Auth ID
+            name: username,
+            password: password,
+            profile_pic: "", // Default empty or set a default image URL from Supabase Storage
+            bio: "",
+            links: [],
+            socials: [],
+          },
+        ]);
+
+        if (insertError) {
+          console.error("Error inserting user data:", insertError.message);
+        } else {
+          console.log("User added to database successfully!");
+        }
+      }
+    }
+
+    setLoading(false);
+
+    if (error) {
+      alert("Signup failed: " + error.message);
+      console.error(error);
+    } else {
+      toast("Signed up successfully", {
+        description: `Login to continue...`,
+        action: {
+          label: "Okay",
+          onClick: () => console.log("Undo"),
+        },
+      });
+
+      setTimeout(() => {
+        window.location.href = "/#signup";
+        const usernameInput = document.getElementById(
+          "username"
+        ) as HTMLInputElement;
+        if (usernameInput) usernameInput.value = "";
+        const passwordInput = document.getElementById(
+          "password"
+        ) as HTMLInputElement;
+        if (passwordInput) passwordInput.value = "";
+      }, 1500);
+    }
+  }
+
+  async function signInUser() {
+    if (!username || !password) {
+      alert("Username and password are required!");
+      return;
+    }
+
+    const usernameFinal = `${username}@nexoq.me`;
+    setLoading(true);
+
+    const { error } = await supabase.auth.signInWithPassword({
+      email: usernameFinal,
+      password: password,
+    });
+
+    if (error) {
+      setLoading(false);
+      alert("Login failed: " + error.message);
+      console.error(error);
+      return;
+    }
+
+    toast("Logged in successfully", {
+      description: `Redirecting in 3 seconds...`,
+      action: {
+        label: "Okay",
+        onClick: () => console.log("Undo"),
+      },
+    });
+    async function getCurrentUserId() {
+      const { data: authData, error: authError } =
+        await supabase.auth.getUser();
+
+      if (authError) {
+        console.error("Error fetching authenticated user:", authError.message);
+        return null;
+      }
+
+      const uid = authData?.user?.id;
+      if (!uid) return null;
+
+      const { data: userData, error: userError } = await supabase
+        .from("users")
+        .select("id")
+        .eq("uid", uid)
+        .single();
+
+      if (userError) {
+        console.error(
+          "Error fetching user ID from database:",
+          userError.message
+        );
+        return null;
+      }
+
+      return userData?.id || null;
+    }
+    const userId = await getCurrentUserId();
+
+    setTimeout(() => {
+      window.location.href = `/create/${userId}`;
+    }, 3000);
+
+    setLoading(false);
+  }
+
+  useEffect(() => {
+    checkSessionAndNotify();
+  }, []);
+
+  return (
+    <>
+      <Toaster />
+      {loading && <div>Loading...</div>}
+      <div className="container">
+        <div className="nav">
+          <div className="leftC">
+            <div className="logo">
+              {" "}
+              <Avvvatars
+                style="shape"
+                value="hello 32link124567153fgdfy35ey"
+                size={60}
+              />
+            </div>
+            <div className="linkContainer">
+              <a href="#">
+                <div className="link">Home</div>
+              </a>
+              <a href="#signup">
+                <div className="link">Create</div>
+              </a>
+              <a onClick={goToDashboard}>
+                <div className="link">Dashboard</div>
+              </a>
+              <a href="https://git.new/hellolink" target="_blank">
+                <div className="link">Contribute</div>
+              </a>
+            </div>
+          </div>
+          <div className="rightC">
+            {" "}
+            <div className="buttonContainer">
+              <a href="#signup">
+                <div className="button">Try it out</div>
+              </a>
+            </div>
+          </div>
+        </div>
+        <div className="home">
+          <div className="textBig">hellolink</div>
+          <div className="textSmall">
+            Tired of messy bios? Say hello to a single, powerful link that
+            organizes and shares everything you love in one place.{" "}
+          </div>
+          <a href="#signup">
+            <div className="button">Grab your username now</div>
           </a>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+        <div className="feature">
+          <div className="box">
+            <div className="top">
+              <div className="code1">hellolink/username</div>
+            </div>
+            <div className="bottom">
+              Get a short, shareable link for a clean online identity.
+            </div>
+          </div>
+          <div className="box">
+            {" "}
+            <div className="top">
+              <div className="containerFull">
+                <div className="code">
+                  <div className="line"></div>
+                </div>
+                <div className="code">
+                  <div className="line"></div>
+                </div>
+                <div className="code">
+                  <div className="line"></div>
+                </div>
+              </div>
+            </div>
+            <div className="bottom">
+              One sleek layout that adapts beautifully to all users.
+            </div>
+          </div>
+          <div className="box">
+            {" "}
+            <div className="top">
+              <div className="containerFull">
+                <div className="instagramSquare">
+                  <div className="icon">
+                    <InstagramIcon />
+                  </div>
+                  <div className="text1"></div>
+                  <div className="text2"></div>
+                </div>
+              </div>
+            </div>
+            <div className="bottom">
+              Add instant actions for WhatsApp, email, or DMs.
+            </div>
+          </div>
+        </div>
+        <div id="signup"></div>
+        <div className="signup">
+          <div className="left">
+            <div className="box">
+              <div className="textTop">Sign up and share!</div>
+              <div className="textBottom">
+                Join HelloLink and create your personalized link page in
+                seconds. Share all your important links with a single, sleek
+                profile. Sign up now—it&apos;s quick, easy, and free!
+              </div>
+            </div>
+          </div>
+          <div className="right">
+            <div className="box">
+              <div className="header">
+                <div className="pfp">
+                  <div>
+                    <Avvvatars value="Div803nf" style="shape" size={60} />
+                  </div>
+                </div>
+                <div className="text">hellolink/{username}</div>
+              </div>
+              <input
+                type="text"
+                placeholder="username"
+                id="username"
+                onChange={(e) => setUsername(e.target.value)}
+                maxLength={15}
+                spellCheck={false}
+              />
+              <input
+                type="password"
+                placeholder="password"
+                id="password"
+                spellCheck={false}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+              <div
+                className="buttonSignUp"
+                id="buttonSignUp"
+                onClick={signUpNewUser}
+              >
+                Sign up&nbsp;&nbsp;
+                <ArrowRight size={23} />
+              </div>
+              <div
+                className="buttonSignIn"
+                id="buttonSignUp"
+                onClick={signInUser}
+              >
+                <LogIn size={23} />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="footer">
+          <div className="left">
+            <div className="top">
+              <div className="textTop">hellolink</div>
+              <div className="buttonC">
+                <a href="#signup">
+                  <div className="button1">Try now</div>
+                </a>{" "}
+                <a href="https://git.new/hellolink" target="_blank">
+                  <div className="button2"> Contribute</div>{" "}
+                </a>
+              </div>
+            </div>
+          </div>
+          <div className="right">
+            <div className="box">© 2025 HelloLink. All rights reserved.</div>
+          </div>
+        </div>
+        <div className="lastLine">
+          made with bugs by{" "}
+          <u>
+            <a href="https://git.new/divyanshudhruv" target="_blank">
+              @divyanshudhruv
+            </a>
+          </u>
+        </div>
+      </div>
+    </>
   );
+}
+async function checkSessionAndNotify() {
+  const {
+    data: { session },
+    error,
+  } = await supabase.auth.getSession();
+
+  if (error) {
+    console.error("Error fetching session:", error);
+    return;
+  }
+
+  if (!session?.user?.id) {
+    console.log("No active session found.");
+    return;
+  }
+
+  const sessionID = session.user.id;
+
+  // Fetch user's 'id' from Supabase database
+  const { data, error: userError } = await supabase
+    .from("users")
+    .select("id") // Selecting the 'id' column
+    .eq("uid", sessionID) // Matching the 'uid' field with session ID
+    .single();
+
+  if (userError || !data) {
+    console.error("Error fetching user ID from database:", userError);
+    return;
+  }
+
+  const userId = data.id;
+  console.log("Fetched user ID from database:", userId);
+
+  // Extract username from email
+
+  // Show success toast and redirect
+  toast("Signed up successfully", {
+    description: `User is already logged in.`,
+    action: {
+      label: "Dashboard",
+      onClick: () => (window.location.href = `/create/${userId}`),
+    },
+  });
+}
+
+async function goToDashboard() {
+  const {
+    data: { session },
+    error,
+  } = await supabase.auth.getSession();
+
+  if (error) {
+    console.error("Error fetching session:", error);
+    return;
+  }
+
+  if (!session?.user?.id) {
+    console.log("No active session found.");
+    return;
+  }
+  const sessionID = session.user.id;
+
+  // Fetch user's 'id' from Supabase database
+  const { data, error: userError } = await supabase
+    .from("users")
+    .select("id") // Selecting the 'id' column
+    .eq("uid", sessionID) // Matching the 'uid' field with session ID
+    .single();
+  const userId = data?.id;
+
+  if (userError || !data) {
+    console.error("Error fetching user ID from database:", userError);
+  } else {
+    window.location.href = `/create/${userId}`;
+  }
 }
