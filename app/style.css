@@ -775,21 +775,24 @@ body {
   .nav .leftC .linkContainer .link {
     padding-right: 10%;
   }
-}
-
-@media screen and (max-width: 750px) {
-  .nav .leftC .linkContainer .link:nth-child(1) {
+  .nav .leftC .linkContainer a:nth-child(1) {
     display: none;
   }
-  .nav .leftC .linkContainer .link:nth-child(4) {
+  .nav .leftC .linkContainer a:nth-child(4) {
     display: none;
   }
-
   .linkContainer {
     align-items: center;
     justify-content: start !important;
     flex-direction: row;
+    gap: 20px;
   }
+}
+
+@media screen and (max-width: 750px) {
+  
+
+  
 }
 @media screen and (max-width: 550px) {
   .nav .leftC .linkContainer {

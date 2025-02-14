@@ -315,6 +315,11 @@ body {
   animation: linkUp 0.3s linear;
 }
 
+.linkC .link:hover {
+  box-shadow: 0px 5px 0px 0.1px rgba(30, 35, 48, 0.9);
+
+}
+
 @keyframes linkUp {
   0% {
     transform: translateY(6px);
@@ -475,4 +480,38 @@ body {
 .bottom .saveLink:hover {
   background-color: #ececec;
   transform: translateY(-3px);
+}
+
+@media screen and (max-width: 575px) {
+  .bottom {
+    width: 100%;
+  }
+  .linkC {
+    background-color: rebeccapurple;
+    min-width: 90vw;
+  }
+
+  .nav .buttonLogout {
+    right: 50px !important;
+    top: 100px !important;
+  }
+
+  .main .top .bio {
+    max-width: 80vw;
+    flex-wrap: wrap;
+    white-space: pre;
+    text-wrap: wrap;
+  }
+}
+
+@media screen and (max-width: 375px) {
+  .main .top .bio .editButton {
+    right: 5px;
+    bottom: -10px;
+  }
+
+  .nav .button {
+   scale: 0.7;
+   right: 33px  !important;
+  }
 }

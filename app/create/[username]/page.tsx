@@ -16,6 +16,7 @@ import {
   Plus,
   Save,
   Trash2,
+  X,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -297,7 +298,7 @@ export default function CreateProfile() {
           </div>
           <div
             className="button"
-            onClick={() => (window.location.href = `/${userData.name}`)}
+            onClick={() => window.open(`/${userData.name}`, "_blank")}
           >
             View live
           </div>
@@ -421,7 +422,8 @@ export default function CreateProfile() {
                         onChange={(e) => setCodepen(e.target.value)}
                       />
                     </div>
-                  </div>
+                  </div>{" "}
+                  <Label>✕ Enter all the links one time only</Label>
                   <DialogFooter>
                     <DialogTrigger asChild>
                       <Button onClick={saveSocials}>Save changes</Button>
@@ -500,6 +502,7 @@ export default function CreateProfile() {
                       />
                     </div>
                   </div>
+                  <Label>✕ Enter all the links one time only</Label>
                   <DialogFooter>
                     <DialogTrigger asChild>
                       <Button onClick={saveSocials}>Save changes</Button>
@@ -578,6 +581,7 @@ export default function CreateProfile() {
                       />
                     </div>
                   </div>
+                  <Label>✕ Enter all the links one time only</Label>
                   <DialogFooter>
                     <DialogTrigger asChild>
                       <Button onClick={saveSocials}>Save changes</Button>
@@ -656,6 +660,7 @@ export default function CreateProfile() {
                       />
                     </div>
                   </div>
+                  <Label>✕ Enter all the links one time only</Label>
                   <DialogFooter>
                     <DialogTrigger asChild>
                       <Button onClick={saveSocials}>Save changes</Button>
