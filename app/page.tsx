@@ -311,13 +311,10 @@ export default function Home() {
               <div className="buttonC">
                 <a href="#signup">
                   <div className="button1">Try now</div>
+                </a>{" "}
+                <a href="https://git.new/hellolink" target="_blank">
+                  <div className="button2"> Contribute</div>{" "}
                 </a>
-                <div className="button2">
-                  {" "}
-                  <a href="https://git.new/hellolink" target="_blank">
-                    Contribute
-                  </a>
-                </div>
               </div>
             </div>
           </div>
@@ -354,7 +351,6 @@ async function checkSessionAndNotify() {
   }
 
   const sessionID = session.user.id;
-  const userEmail = session.user.email;
 
   // Fetch user's 'id' from Supabase database
   const { data, error: userError } = await supabase
@@ -372,7 +368,6 @@ async function checkSessionAndNotify() {
   console.log("Fetched user ID from database:", userId);
 
   // Extract username from email
-  const username = userEmail?.substring(0, userEmail.indexOf("@"));
 
   // Show success toast and redirect
   toast("Signed up successfully", {

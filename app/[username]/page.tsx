@@ -1,7 +1,7 @@
 "use client";
 
 import { useParams } from "next/navigation";
-import { useState, useRef, useEffect } from "react";
+import { useState, useEffect } from "react";
 import "./show.css";
 import "./../../styles/errorPage.css";
 import {
@@ -10,9 +10,6 @@ import {
   Dribbble,
   Github,
   Linkedin,
-  Plus,
-  Save,
-  Trash2,
 } from "lucide-react";
 import Avvvatars from "avvvatars-react";
 import { supabase } from "@/config/supabase";
@@ -33,7 +30,7 @@ export default function ShowProfile() {
       const { data: sessionData, error: sessionError } =
         await supabase.auth.getSession();
       if (sessionError) {
-        console.error("Error fetching session:", sessionError);
+        console.error("Error fetching session:", sessionError,userSession);
         return;
       }
 
@@ -68,7 +65,7 @@ export default function ShowProfile() {
     };
 
     fetchUserAndSocials();
-  }, []);
+  },[]);
 
   const { username } = useParams() as unknown as { username: string };
 
@@ -82,6 +79,8 @@ export default function ShowProfile() {
 
   const [links, setLinks] = useState<LinkEntry[]>([]);
   const [idCounter, setIdCounter] = useState(1);
+  
+  console.log(idCounter);
 
   useEffect(() => {
     async function fetchUserData() {
@@ -105,7 +104,7 @@ export default function ShowProfile() {
       }
     }
     fetchUserData();
-  }, [username]);
+  },[username]);
 
   async function getCurrentUserId() {
     const {
@@ -137,10 +136,7 @@ export default function ShowProfile() {
     return data;
   }
 
-  interface UserLinks {
-    [key: string]: { url: string };
-  }
-
+ 
   interface LinkEntry {
     id: number;
     name: string;
@@ -200,7 +196,7 @@ export default function ShowProfile() {
             hellolink
           </div>
           <div className="button" onClick={() => (window.location.href = "/")}>
-            Get your's !
+            Get your&apos;s !
           </div>
         </div>
         <div className="main">
@@ -272,8 +268,7 @@ function DynamicLink({
 }: {
   link: { id: number; name: string; url: string };
 }) {
-  const logoRef = useRef<number | null>(null);
-  const [logoValue, setLogoValue] = useState(link.name || "410dev");
+  const [logoValue] = useState(link.name || "410dev");
 
   return (
     <div className="link">

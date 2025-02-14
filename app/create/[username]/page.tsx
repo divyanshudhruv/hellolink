@@ -6,18 +6,13 @@ import "./create.css";
 import "./../../../styles/errorPage.css";
 import {
   Codepen,
-  CodepenIcon,
   Download,
   Dribbble,
-  EditIcon,
   Github,
   Linkedin,
   LogOut,
-  Pen,
   Plus,
-  Save,
   Trash2,
-  X,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -113,9 +108,7 @@ export default function CreateProfile() {
     return data;
   }
 
-  interface UserLinks {
-    [key: string]: { url: string };
-  }
+  
 
   interface LinkEntry {
     id: number;
@@ -202,7 +195,6 @@ export default function CreateProfile() {
         <div className="error">
           Loading(checking auth)...
           <br />
-          
           <UserNotFound />
         </div>
       </>
@@ -234,7 +226,7 @@ export default function CreateProfile() {
       return;
     }
 
-    let socialsJSON = {
+    const socialsJSON = {
       github: github,
       dribbble: dribbble,
       linkedin: linkedin,
@@ -282,19 +274,7 @@ export default function CreateProfile() {
     }
   }
 
-  async function getUserBio() {
-    const { data, error } = await supabase
-      .from("users")
-      .select("bio")
-      .eq("id", userData.id)
-      .single();
-
-    if (error) {
-      console.error("Error fetching user bio:", error);
-      return null;
-    }
-    return data;
-  }
+  
   async function logOut() {
     const { error } = await supabase.auth.signOut();
 
@@ -348,7 +328,7 @@ export default function CreateProfile() {
                   <DialogHeader>
                     <DialogTitle>Edit bio</DialogTitle>
                     <DialogDescription>
-                      Make changes to your bio here. Click save when you're
+                      Make changes to your bio here. Click save when you&apos;re
                       done.
                     </DialogDescription>
                   </DialogHeader>
@@ -388,7 +368,7 @@ export default function CreateProfile() {
                     <DialogTitle>Edit your social links</DialogTitle>
                     <DialogDescription>
                       Make changes to your social links here. Click save when
-                      you're done.
+                      you&apos;re done.
                     </DialogDescription>
                   </DialogHeader>
                   <div className="grid gap-4 py-4">
@@ -467,7 +447,7 @@ export default function CreateProfile() {
                     <DialogTitle>Edit your social links</DialogTitle>
                     <DialogDescription>
                       Make changes to your social links here. Click save when
-                      you're done.
+                      you&apos;re done.
                     </DialogDescription>
                   </DialogHeader>
                   <div className="grid gap-4 py-4">
@@ -546,7 +526,7 @@ export default function CreateProfile() {
                     <DialogTitle>Edit your social links</DialogTitle>
                     <DialogDescription>
                       Make changes to your social links here. Click save when
-                      you're done.
+                      you&apos;re done.
                     </DialogDescription>
                   </DialogHeader>
                   <div className="grid gap-4 py-4">
@@ -625,7 +605,7 @@ export default function CreateProfile() {
                     <DialogTitle>Edit your social links</DialogTitle>
                     <DialogDescription>
                       Make changes to your social links here. Click save when
-                      you're done.
+                      you&apos;re done.
                     </DialogDescription>
                   </DialogHeader>
                   <div className="grid gap-4 py-4">

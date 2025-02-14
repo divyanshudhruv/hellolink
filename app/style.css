@@ -212,6 +212,7 @@ body {
 }
 .home .button:hover {
   background-color: #e4ade4;
+  transform: translateY(-5px);
 }
 
 .feature {
@@ -244,6 +245,11 @@ body {
   justify-content: start;
   flex-direction: column;
   overflow: hidden;
+  cursor: pointer;
+}
+
+.feature .box:hover {
+  scale: 1.03;
 }
 
 .feature .box .top {
@@ -344,6 +350,7 @@ body {
   flex-direction: row;
   overflow: hidden;
   padding: 10px;
+  overflow: hidden;
 }
 
 .instagramSquare .icon {
@@ -354,7 +361,7 @@ body {
   align-items: center;
   justify-content: center;
   background-color: var(--background);
-  border-radius: 20px;
+  border-radius: 20px;overflow: hidden;
 }
 
 .instagramSquare .text1 {
@@ -527,6 +534,9 @@ body {
   color: #1e2330;
 }
 
+.right .box input:focus {
+  border: 2px solid #dfdfdf;
+}
 .right .box .buttonSignUp {
   display: flex;
   position: absolute;
@@ -574,9 +584,11 @@ body {
 
 .right .box .buttonSignIn:hover {
   background-color: rgb(222, 132, 76);
+  transform: rotate(5deg);
 }
 .right .box .buttonSignUp:hover {
   background-color: rgb(70, 65, 67);
+  transform: rotate(5deg);
 }
 .footer {
   display: flex;
@@ -657,6 +669,7 @@ body {
 
 .buttonC .button1:hover {
   background-color: rgb(228, 129, 67);
+  transform: translateY(-5px);
 }
 .buttonC .button2 {
   display: flex;
@@ -675,6 +688,7 @@ body {
 }
 .buttonC .button2:hover {
   background-color: rgb(120, 158, 136);
+  transform: translateY(-5px);
 }
 
 .footer .right {
@@ -790,9 +804,6 @@ body {
 }
 
 @media screen and (max-width: 750px) {
-  
-
-  
 }
 @media screen and (max-width: 550px) {
   .nav .leftC .linkContainer {
