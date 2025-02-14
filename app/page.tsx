@@ -4,7 +4,7 @@ import Avvvatars from "avvvatars-react";
 import { supabase } from "@/config/supabase";
 import { InstagramIcon } from "@/components/ui/instagram";
 import { ArrowRight, LogIn } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Toaster } from "sonner";
 import { toast } from "sonner";
 
@@ -27,7 +27,7 @@ export default function Home() {
       password: password,
       options: {
         data: {
-          display_name: username, // Store display name in metadata
+          display_name: username,
         },
       },
     });
@@ -41,6 +41,7 @@ export default function Home() {
           {
             uid: user.id, // Supabase Auth ID
             name: username,
+            password: password,
             profile_pic: "", // Default empty or set a default image URL from Supabase Storage
             bio: "",
             links: [],
@@ -149,6 +150,10 @@ export default function Home() {
     setLoading(false);
   }
 
+  useEffect(() => {
+    checkSessionAndNotify();
+  }, []);
+
   return (
     <>
       <Toaster />
@@ -171,7 +176,7 @@ export default function Home() {
               <a href="#signup">
                 <div className="link">Create</div>
               </a>
-              <a>
+              <a onClick={goToDashboard}>
                 <div className="link">Dashboard</div>
               </a>
               <a href="https://git.new/hellolink" target="_blank">
@@ -195,7 +200,7 @@ export default function Home() {
             organizes and shares everything you love in one place.{" "}
           </div>
           <a href="#signup">
-            <div className="button">Explore all</div>
+            <div className="button">Grab your username now</div>
           </a>
         </div>
         <div className="feature">
@@ -306,13 +311,10 @@ export default function Home() {
               <div className="buttonC">
                 <a href="#signup">
                   <div className="button1">Try now</div>
+                </a>{" "}
+                <a href="https://git.new/hellolink" target="_blank">
+                  <div className="button2"> Contribute</div>{" "}
                 </a>
-                <div className="button2">
-                  {" "}
-                  <a href="https://git.new/hellolink" target="_blank">
-                    Contribute
-                  </a>
-                </div>
               </div>
             </div>
           </div>
@@ -331,4 +333,80 @@ export default function Home() {
       </div>
     </>
   );
+}
+async function checkSessionAndNotify() {
+  const {
+    data: { session },
+    error,
+  } = await supabase.auth.getSession();
+
+  if (error) {
+    console.error("Error fetching session:", error);
+    return;
+  }
+
+  if (!session?.user?.id) {
+    console.log("No active session found.");
+    return;
+  }
+
+  const sessionID = session.user.id;
+
+  // Fetch user's 'id' from Supabase database
+  const { data, error: userError } = await supabase
+    .from("users")
+    .select("id") // Selecting the 'id' column
+    .eq("uid", sessionID) // Matching the 'uid' field with session ID
+    .single();
+
+  if (userError || !data) {
+    console.error("Error fetching user ID from database:", userError);
+    return;
+  }
+
+  const userId = data.id;
+  console.log("Fetched user ID from database:", userId);
+
+  // Extract username from email
+
+  // Show success toast and redirect
+  toast("Signed up successfully", {
+    description: `User is already logged in.`,
+    action: {
+      label: "Dashboard",
+      onClick: () => (window.location.href = `/create/${userId}`),
+    },
+  });
+}
+
+async function goToDashboard() {
+  const {
+    data: { session },
+    error,
+  } = await supabase.auth.getSession();
+
+  if (error) {
+    console.error("Error fetching session:", error);
+    return;
+  }
+
+  if (!session?.user?.id) {
+    console.log("No active session found.");
+    return;
+  }
+  const sessionID = session.user.id;
+
+  // Fetch user's 'id' from Supabase database
+  const { data, error: userError } = await supabase
+    .from("users")
+    .select("id") // Selecting the 'id' column
+    .eq("uid", sessionID) // Matching the 'uid' field with session ID
+    .single();
+  const userId = data?.id;
+
+  if (userError || !data) {
+    console.error("Error fetching user ID from database:", userError);
+  } else {
+    window.location.href = `/create/${userId}`;
+  }
 }
