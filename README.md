@@ -1,6 +1,6 @@
 # 🔗 HelloLink
 
-HelloLink is a **simple** and **sleek** platform that allows users to create a **single**, **powerful** link to organize and share everything they love in **one** **place**. 🌐
+HelloLink is an  **`AI powered`**, **`open-source`**, **simple** and **sleek** platform that allows users to create a **single**, **powerful** link to organize and share everything they love in **one** **place**. 🌐
 
 <br>
 
