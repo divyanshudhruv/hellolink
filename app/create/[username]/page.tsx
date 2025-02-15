@@ -108,8 +108,6 @@ export default function CreateProfile() {
     return data;
   }
 
-  
-
   interface LinkEntry {
     id: number;
     name: string;
@@ -274,7 +272,6 @@ export default function CreateProfile() {
     }
   }
 
-  
   async function logOut() {
     const { error } = await supabase.auth.signOut();
 
@@ -379,6 +376,7 @@ export default function CreateProfile() {
                         id="github"
                         value={github}
                         onChange={(e) => setGithub(e.target.value)} // ✅ No cursor reset
+                        spellCheck={false}
                       />
                       <div
                         style={{
@@ -392,6 +390,7 @@ export default function CreateProfile() {
                       <Input
                         placeholder="Enter Dribbble URL"
                         id="dribbble"
+                        spellCheck={false}
                         value={dribbble}
                         onChange={(e) => setDribbble(e.target.value)}
                       />
@@ -406,6 +405,7 @@ export default function CreateProfile() {
                       <Label>LinkedIn</Label>
                       <Input
                         placeholder="Enter LinkedIn URL"
+                        spellCheck={false}
                         id="linkedin"
                         value={linkedin}
                         onChange={(e) => setLinkedin(e.target.value)}
@@ -421,6 +421,7 @@ export default function CreateProfile() {
                       <Label>CodePen</Label>
                       <Input
                         placeholder="Enter CodePen URL"
+                        spellCheck={false}
                         id="codepen"
                         value={codepen}
                         onChange={(e) => setCodepen(e.target.value)}
@@ -456,6 +457,7 @@ export default function CreateProfile() {
                       <Input
                         placeholder="Enter GitHub URL"
                         id="github"
+                        spellCheck={false}
                         value={github}
                         onChange={(e) => setGithub(e.target.value)} // ✅ No cursor reset
                       />
@@ -470,6 +472,7 @@ export default function CreateProfile() {
                       <Label>Dribbble</Label>
                       <Input
                         placeholder="Enter Dribbble URL"
+                        spellCheck={false}
                         id="dribbble"
                         value={dribbble}
                         onChange={(e) => setDribbble(e.target.value)}
@@ -485,6 +488,7 @@ export default function CreateProfile() {
                       <Label>LinkedIn</Label>
                       <Input
                         placeholder="Enter LinkedIn URL"
+                        spellCheck={false}
                         id="linkedin"
                         value={linkedin}
                         onChange={(e) => setLinkedin(e.target.value)}
@@ -502,6 +506,7 @@ export default function CreateProfile() {
                         placeholder="Enter CodePen URL"
                         id="codepen"
                         value={codepen}
+                        spellCheck={false}
                         onChange={(e) => setCodepen(e.target.value)}
                       />
                     </div>
@@ -533,6 +538,7 @@ export default function CreateProfile() {
                     <div className="min-w-full min-h-fit">
                       <Label>Github</Label>
                       <Input
+                        spellCheck={false}
                         placeholder="Enter GitHub URL"
                         id="github"
                         value={github}
@@ -550,6 +556,7 @@ export default function CreateProfile() {
                       <Input
                         placeholder="Enter Dribbble URL"
                         id="dribbble"
+                        spellCheck={false}
                         value={dribbble}
                         onChange={(e) => setDribbble(e.target.value)}
                       />
@@ -563,6 +570,7 @@ export default function CreateProfile() {
 
                       <Label>LinkedIn</Label>
                       <Input
+                        spellCheck={false}
                         placeholder="Enter LinkedIn URL"
                         id="linkedin"
                         value={linkedin}
@@ -580,6 +588,7 @@ export default function CreateProfile() {
                       <Input
                         placeholder="Enter CodePen URL"
                         id="codepen"
+                        spellCheck={false}
                         value={codepen}
                         onChange={(e) => setCodepen(e.target.value)}
                       />
@@ -614,6 +623,7 @@ export default function CreateProfile() {
                       <Input
                         placeholder="Enter GitHub URL"
                         id="github"
+                        spellCheck={false}
                         value={github}
                         onChange={(e) => setGithub(e.target.value)} // ✅ No cursor reset
                       />
@@ -629,6 +639,7 @@ export default function CreateProfile() {
                       <Input
                         placeholder="Enter Dribbble URL"
                         id="dribbble"
+                        spellCheck={false}
                         value={dribbble}
                         onChange={(e) => setDribbble(e.target.value)}
                       />
@@ -645,6 +656,7 @@ export default function CreateProfile() {
                         placeholder="Enter LinkedIn URL"
                         id="linkedin"
                         value={linkedin}
+                        spellCheck={false}
                         onChange={(e) => setLinkedin(e.target.value)}
                       />
                       <div
@@ -661,6 +673,7 @@ export default function CreateProfile() {
                         id="codepen"
                         value={codepen}
                         onChange={(e) => setCodepen(e.target.value)}
+                        spellCheck={false}
                       />
                     </div>
                   </div>
@@ -740,6 +753,7 @@ function DynamicLink({
           placeholder="Name"
           value={link.name}
           onChange={(e) => updateLink(link.id, e.target.value, link.url)}
+          spellCheck={false}
         />
         <div className="separator"></div>
         <input
@@ -747,6 +761,7 @@ function DynamicLink({
           placeholder="Link"
           value={link.url}
           onChange={handleUrlChange}
+          spellCheck={false}
         />
       </div>
       <div className="enter" onClick={() => removeLink(link.id)}>
