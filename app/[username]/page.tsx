@@ -97,9 +97,10 @@ export default function ShowProfile() {
         bio: userDetails?.bio || "",
       });
 
-      if (userDetails?.uid === userId) {
-        fetchLinks(userDetails.uid);
-      }
+        if (userDetails) {
+          fetchLinks(userDetails.uid);
+        }
+      
     }
     fetchUserData();
   },[username]);
