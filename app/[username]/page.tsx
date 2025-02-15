@@ -23,6 +23,7 @@ export default function ShowProfile() {
     linkedin: "",
     codepen: "",
   });
+  const { username } = useParams() as unknown as { username: string };
 
   useEffect(() => {
     const fetchUserAndSocials = async () => {
@@ -30,7 +31,7 @@ export default function ShowProfile() {
       const { data: sessionData, error: sessionError } =
         await supabase.auth.getSession();
       if (sessionError) {
-        console.error("Error fetching session:", sessionError,userSession);
+        console.error("Error fetching session:", sessionError, userSession);
         return;
       }
 
@@ -46,7 +47,7 @@ export default function ShowProfile() {
       const { data: socialsData, error: socialsError } = await supabase
         .from("users")
         .select("socials")
-        .eq("uid", user.id)
+        .eq("username", username)
         .single();
 
       if (socialsError) {
@@ -65,9 +66,7 @@ export default function ShowProfile() {
     };
 
     fetchUserAndSocials();
-  },[]);
-
-  const { username } = useParams() as unknown as { username: string };
+  }, []);
 
   const [userData, setUserData] = useState({
     id: "",
@@ -78,7 +77,7 @@ export default function ShowProfile() {
 
   const [links, setLinks] = useState<LinkEntry[]>([]);
   const [idCounter, setIdCounter] = useState(1);
-  
+
   console.log(idCounter);
 
   useEffect(() => {
@@ -97,13 +96,12 @@ export default function ShowProfile() {
         bio: userDetails?.bio || "",
       });
 
-        if (userDetails) {
-          fetchLinks(userDetails.uid);
-        }
-      
+      if (userDetails) {
+        fetchLinks(userDetails.uid);
+      }
     }
     fetchUserData();
-  },[username]);
+  }, [username]);
 
   async function getCurrentUserId() {
     const {
@@ -135,7 +133,6 @@ export default function ShowProfile() {
     return data;
   }
 
- 
   interface LinkEntry {
     id: number;
     name: string;
@@ -162,8 +159,6 @@ export default function ShowProfile() {
     setLinks(savedLinks);
     setIdCounter(savedLinks.length + 1);
   }
-
-  
 
   // if (!isAuthorized)
   //   return (
