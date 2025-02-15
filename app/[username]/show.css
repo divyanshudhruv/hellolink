@@ -345,3 +345,45 @@ body {
   display: flex;
   position: relative;
 }
+
+@media screen and (max-width: 575px) {
+  .bottom {
+    width: 100%;
+  }
+
+  .nav .buttonLogout {
+    right: 50px !important;
+    top: 100px !important;
+  }
+
+  .main .top .bio {
+    max-width: 80vw;
+    flex-wrap: wrap;
+    white-space: pre;
+    text-wrap: wrap;
+  }
+  .link .input {
+    max-width: 60%;
+  }
+}
+
+@media screen and (max-width: 800px) {
+  .linkC {
+    background-color: transparent;
+    min-width: 90vw;
+  }
+}
+
+@media screen and (max-width: 475px) {
+  .linkC .input {
+    max-width: 60%;
+    overflow-x: scroll;
+    flex-direction: row !important;
+    white-space: pre;
+    text-wrap: normal;
+  }
+
+  .linkC .input::-webkit-scrollbar {
+    display: none !important;
+  }
+}

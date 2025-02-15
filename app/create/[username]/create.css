@@ -487,13 +487,13 @@ body {
     width: 100%;
   }
   .linkC {
-    background-color: rebeccapurple;
+    background-color: transparent;
     min-width: 90vw;
   }
 
   .nav .buttonLogout {
     right: 50px !important;
-    top: 100px !important;
+    top: 110px !important;
   }
 
   .main .top .bio {

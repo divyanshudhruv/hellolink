@@ -177,17 +177,16 @@ export default function ShowProfile() {
     return showNotFound ? <>USER NOT FOUND ;-;</> : null;
   }
 
-  if (!isAuthorized)
-    return (
-      <>
-        <div className="error">
-          Loading(checking auth)...
-          <br />
-          <UserNotFound />
-        </div>
-      </>
-    );
-
+  // if (!isAuthorized)
+  //   return (
+  //     <>
+  //       <div className="error">
+  //         Loading(checking auth)...
+  //         <br />
+  //         <UserNotFound />
+  //       </div>
+  //     </>
+  //   );
   return (
     <>
       <div className="home">
