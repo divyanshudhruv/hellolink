@@ -47,7 +47,7 @@ export default function ShowProfile() {
       const { data: socialsData, error: socialsError } = await supabase
         .from("users")
         .select("socials")
-        .eq("username", username)
+        .eq("name", username)
         .single();
 
       if (socialsError) {
