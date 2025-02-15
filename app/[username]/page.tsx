@@ -69,7 +69,6 @@ export default function ShowProfile() {
 
   const { username } = useParams() as unknown as { username: string };
 
-  const [isAuthorized, setIsAuthorized] = useState(false);
   const [userData, setUserData] = useState({
     id: "",
     uid: "",
@@ -99,7 +98,6 @@ export default function ShowProfile() {
       });
 
       if (userDetails?.uid === userId) {
-        setIsAuthorized(true);
         fetchLinks(userDetails.uid);
       }
     }
@@ -164,18 +162,7 @@ export default function ShowProfile() {
     setIdCounter(savedLinks.length + 1);
   }
 
-  function UserNotFound() {
-    useEffect(() => {
-      const timer = setTimeout(() => {
-        setShowNotFound(true);
-      }, 3000);
-      return () => clearTimeout(timer);
-    }, []);
-
-    const [showNotFound, setShowNotFound] = useState(false);
-
-    return showNotFound ? <>USER NOT FOUND ;-;</> : null;
-  }
+  
 
   // if (!isAuthorized)
   //   return (
