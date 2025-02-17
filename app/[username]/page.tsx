@@ -159,17 +159,6 @@ export default function ShowProfile() {
     setLinks(savedLinks);
     setIdCounter(savedLinks.length + 1);
   }
-
-  // if (!isAuthorized)
-  //   return (
-  //     <>
-  //       <div className="error">
-  //         Loading(checking auth)...
-  //         <br />
-  //         <UserNotFound />
-  //       </div>
-  //     </>
-  //   );
   return (
     <>
       <div className="home">
