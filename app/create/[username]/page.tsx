@@ -291,15 +291,30 @@ export default function CreateProfile() {
       <Toaster />
       <div className="home">
         <div className="nav">
-          <div className="textBig" onClick={() => (window.location.href = "/")}>
+          <div
+            className="textBig"
+            onClick={() => (window.location.href = "/")}
+            onKeyDown={() => {}}
+            role="button"
+            tabIndex={0}
+          >
             hellolink
           </div>
-          <div className="buttonLogout" onClick={logOut}>
+          <div
+            className="buttonLogout"
+            onClick={logOut}
+            onKeyDown={() => {}}
+            role="button"
+            tabIndex={0}
+          >
             <LogOut />
           </div>
           <div
             className="button"
             onClick={() => window.open(`/${userData.name}`, "_blank")}
+            onKeyDown={() => {}}
+            role="button"
+            tabIndex={0}
           >
             View live
           </div>
@@ -347,7 +362,14 @@ export default function CreateProfile() {
                   </div>
                   <DialogFooter>
                     <DialogTrigger asChild>
-                      <Button onClick={saveBio}>Save changes</Button>
+                      <Button
+                        onClick={saveBio}
+                        onKeyDown={() => {}}
+                        role="button"
+                        tabIndex={0}
+                      >
+                        Save changes
+                      </Button>
                     </DialogTrigger>
                   </DialogFooter>
                 </DialogContent>
@@ -431,7 +453,14 @@ export default function CreateProfile() {
                   <Label>✕ Enter all the links one time only</Label>
                   <DialogFooter>
                     <DialogTrigger asChild>
-                      <Button onClick={saveSocials}>Save changes</Button>
+                      <Button
+                        onClick={saveSocials}
+                        onKeyDown={() => {}}
+                        role="button"
+                        tabIndex={0}
+                      >
+                        Save changes
+                      </Button>
                     </DialogTrigger>
                   </DialogFooter>
                 </DialogContent>
@@ -514,7 +543,14 @@ export default function CreateProfile() {
                   <Label>✕ Enter all the links one time only</Label>
                   <DialogFooter>
                     <DialogTrigger asChild>
-                      <Button onClick={saveSocials}>Save changes</Button>
+                      <Button
+                        onClick={saveSocials}
+                        onKeyDown={() => {}}
+                        role="button"
+                        tabIndex={0}
+                      >
+                        Save changes
+                      </Button>
                     </DialogTrigger>
                   </DialogFooter>
                 </DialogContent>
@@ -597,7 +633,14 @@ export default function CreateProfile() {
                   <Label>✕ Enter all the links one time only</Label>
                   <DialogFooter>
                     <DialogTrigger asChild>
-                      <Button onClick={saveSocials}>Save changes</Button>
+                      <Button
+                        onClick={saveSocials}
+                        onKeyDown={() => {}}
+                        role="button"
+                        tabIndex={0}
+                      >
+                        Save changes
+                      </Button>
                     </DialogTrigger>
                   </DialogFooter>
                 </DialogContent>
@@ -680,7 +723,14 @@ export default function CreateProfile() {
                   <Label>✕ Enter all the links one time only</Label>
                   <DialogFooter>
                     <DialogTrigger asChild>
-                      <Button onClick={saveSocials}>Save changes</Button>
+                      <Button
+                        onClick={saveSocials}
+                        onKeyDown={() => {}}
+                        role="button"
+                        tabIndex={0}
+                      >
+                        Save changes
+                      </Button>
                     </DialogTrigger>
                   </DialogFooter>
                 </DialogContent>
@@ -708,10 +758,22 @@ export default function CreateProfile() {
                   />
                 ))}
               </div>
-              <div className="addLink" onClick={addLink}>
+              <div
+                className="addLink"
+                onClick={addLink}
+                onKeyDown={() => {}}
+                role="button"
+                tabIndex={0}
+              >
                 <Plus size={32} />
               </div>
-              <div className="saveLink" onClick={saveLinksToSupabase}>
+              <div
+                className="saveLink"
+                onClick={saveLinksToSupabase}
+                onKeyDown={() => {}}
+                role="button"
+                tabIndex={0}
+              >
                 <Download size={32} />
               </div>
             </div>
@@ -764,7 +826,13 @@ function DynamicLink({
           spellCheck={false}
         />
       </div>
-      <div className="enter" onClick={() => removeLink(link.id)}>
+      <div
+        className="enter"
+        onClick={() => removeLink(link.id)}
+        onKeyDown={() => {}}
+        role="button"
+        tabIndex={0}
+      >
         <Trash2 size={26} />
       </div>
     </div>

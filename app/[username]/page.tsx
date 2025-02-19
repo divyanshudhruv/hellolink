@@ -163,10 +163,22 @@ export default function ShowProfile() {
     <>
       <div className="home">
         <div className="nav">
-          <div className="textBig" onClick={() => (window.location.href = "/")}>
+          <div
+            className="textBig"
+            onClick={() => (window.location.href = "/")}
+            onKeyDown={() => {}}
+            role="button"
+            tabIndex={0}
+          >
             hellolink
           </div>
-          <div className="button" onClick={() => (window.location.href = "/")}>
+          <div
+            className="button"
+            onClick={() => (window.location.href = "/")}
+            onKeyDown={() => {}}
+            role="button"
+            tabIndex={0}
+          >
             Get your&apos;s !
           </div>
         </div>
@@ -187,24 +199,36 @@ export default function ShowProfile() {
               <div
                 className="item"
                 onClick={() => window.open(socials.github, "_blank")}
+                onKeyDown={() => {}}
+                role="button"
+                tabIndex={0}
               >
                 <Github />
               </div>
               <div
                 className="item"
                 onClick={() => window.open(socials.dribbble, "_blank")}
+                onKeyDown={() => {}}
+                role="button"
+                tabIndex={0}
               >
                 <Dribbble />
               </div>
               <div
                 className="item"
                 onClick={() => window.open(socials.linkedin, "_blank")}
+                onKeyDown={() => {}}
+                role="button"
+                tabIndex={0}
               >
                 <Linkedin />
               </div>
               <div
                 className="item"
                 onClick={() => window.open(socials.codepen, "_blank")}
+                onKeyDown={() => {}}
+                role="button"
+                tabIndex={0}
               >
                 <CodepenIcon />
               </div>
@@ -247,7 +271,13 @@ function DynamicLink({
         <Avvvatars value={logoValue} style="shape" size={55} />
       </div>
       <div className="input">{link.name}</div>
-      <div className="enter" onClick={() => window.open(link.url, "_blank")}>
+      <div
+        className="enter"
+        onClick={() => window.open(link.url, "_blank")}
+        onKeyDown={() => {}}
+        role="button"
+        tabIndex={0}
+      >
         <ArrowRight />
       </div>
     </div>

@@ -176,7 +176,12 @@ export default function Home() {
               <a href="#signup">
                 <div className="link">Create</div>
               </a>
-              <a onClick={goToDashboard}>
+              <a
+                onClick={goToDashboard}
+                onKeyDown={() => {}}
+                role="button"
+                tabIndex={0}
+              >
                 <div className="link">Dashboard</div>
               </a>
               <a href="https://git.new/hellolink" target="_blank">
@@ -290,6 +295,9 @@ export default function Home() {
                 className="buttonSignUp"
                 id="buttonSignUp"
                 onClick={signUpNewUser}
+                onKeyDown={() => {}}
+                role="button"
+                tabIndex={0}
               >
                 Sign up&nbsp;&nbsp;
                 <ArrowRight size={23} />
@@ -298,6 +306,9 @@ export default function Home() {
                 className="buttonSignIn"
                 id="buttonSignUp"
                 onClick={signInUser}
+                onKeyDown={() => {}}
+                role="button"
+                tabIndex={0}
               >
                 <LogIn size={23} />
               </div>
